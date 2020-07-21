@@ -6,25 +6,23 @@ console.log(checkForName);
 alert("I EXIST")
 console.log("CHANGE!!");
 //-----------------------------------------
-document.getElementById("generate").addEventListener("click", performAction);
+document.getElementById("submitBtn").addEventListener("click", performAction);
 
-const axios = require('axios');
-async function getNews(title) {
-    return axios.get('https://api.aylien.com/news/stories', {
-        params: {
-            title: `${title}`
-        },
-        headers: {
-            "X-AYLIEN-NewsAPI-Application-ID": process.env.APP_ID,
-            "X-AYLIEN-NewsAPI-Application-Key": process.env.API_KEY
-        }
-    }).then(r => {
-        let dataSet = r.data.stories; //array of objects
-        return dataSet.map(data => {
-            return data.title
-        })
-    });
+const traerDatos =  async (baseURL) => {
+    const res = await fetch(baseURL);
+    try {
+        const data = await res.json();
+        return data;
+    } catch(error) {
+        console.log("error", error);
+    }
 }
+
+function performAction(e) {
+    traerDatos("http://localhost:8081/traerDatos");
+}
+
+
 //-----------------------------------------
 export {
     checkForName,
