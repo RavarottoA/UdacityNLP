@@ -12,7 +12,9 @@ function handleSubmit(event) {
     .then(res => res.json())
     .then(function(res) {
         console.log(res);
-        //document.getElementById('results').innerHTML = res.message
+        const sentence = `<p>${res.sentence}</p>`;
+        const subjectivity = `<p>${res.subjectivity}</p>`;
+        document.getElementById('results').innerHTML = `${sentence}${subjectivity}`;
     })
 }
 

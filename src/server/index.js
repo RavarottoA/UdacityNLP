@@ -3,6 +3,8 @@ dotenv.config();
 var path = require('path')
 const express = require('express')
 const mockAPIResponse = require('./mockAPI.js')
+const axios = require("axios")
+
 
 const app = express()
 
@@ -35,20 +37,33 @@ app.get('/test', function (req, res) {
     res.send(mockAPIResponse)
 })
 
-/*var aylien = require("aylien-news-api");
-var newsapi = new aylien({
-    application_id: process.env.API_ID,
-    application_key: process.env.API_KEY
- });*/
+// Dev Code
 
-let datos = {
-    "msg": "Hello world" 
-}
+const apiURL = "https://api.meaningcloud.com/sentiment-2.1";   
+const apiKey = "?key=ce1e7c4465496492b09b5af6dbe85d9d";
+const outFormat = "&of=json";
+const txt = "&txt="
+const model  = "&model=general";
+const language = "&lang=en";
 
  app.get("/traerDatos", function (req, res){
+    let datos = {};
     const name = req.query.name;
-    console.log(name);
-    datos["name"]=name; 
-    res.json(datos);
-    res.end();
+    const finalURL = apiURL + apiKey + outFormat + txt + name + model + language;
+    console.log(`name: ${name}`);
+    console.log(`finalURL: ${finalURL}`);
+    axios.post(finalURL, {})
+    .then(function (axiosRes){
+        const r = axiosRes.data; 
+        console.log(r);
+        datos["sentence"] = name;
+        datos["subjectivity"]= r.subjectivity; 
+        res.json(datos);
+        res.end();
+    }) 
+    .catch (function (error) {
+        console.log(error);
+        res.end();
+    })
  })
+
