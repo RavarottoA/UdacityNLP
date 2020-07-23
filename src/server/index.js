@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 
 // Cors for cross origin allowance
 const cors = require("cors");
+const { stringify } = require('querystring');
 app.use(cors());
 
 app.use(express.static('dist'))
@@ -40,16 +41,17 @@ app.get('/test', function (req, res) {
 // Dev Code
 
 const apiURL = "https://api.meaningcloud.com/sentiment-2.1";   
-const apiKey = "?key=ce1e7c4465496492b09b5af6dbe85d9d";
+const apiKey = "?key=";
 const outFormat = "&of=json";
 const txt = "&txt="
 const model  = "&model=general";
 const language = "&lang=en";
+const key = process.env.API_KEY;
 
  app.get("/traerDatos", function (req, res){
     let datos = {};
     const name = req.query.name;
-    const finalURL = apiURL + apiKey + outFormat + txt + name + model + language;
+    const finalURL = apiURL + apiKey + key + outFormat + txt + name + model + language;
     console.log(`name: ${name}`);
     console.log(`finalURL: ${finalURL}`);
     axios.post(finalURL, {})
